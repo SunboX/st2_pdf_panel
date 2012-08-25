@@ -10,7 +10,7 @@ Ext.define('Ext.ux.panel.PDF', {
     alias : 'widget.pdfpanel',
     
     config: {
-        doubleTapScale: 1.5,
+        doubleTapScale: 1,
         loadingMask   : true,
         resizeOnLoad  : true,
         initOnActivate: false,
@@ -572,11 +572,20 @@ Ext.define('Ext.ux.panel.PDF', {
     },
     
     resize: function() {
-        var me = this;
+        var me = this,
+            parentElement = me.parent;
         
         // get viewport size
-        me.viewportWidth = me.parent.element.getWidth() || me.viewportWidth || me.getWidth();
-        me.viewportHeight = me.parent.element.getHeight() || me.viewportHeight || me.getHeight();
+        me.viewportWidth = me.element.getWidth() || parentElement.getWidth();
+        me.viewportHeight = (function(){
+            var h = me.element.getHeight() || parentElement.getHeight(),
+                docked = me.getDockedItems(),
+                i, len;
+            for(i = 0, len = docked.length; i < len; i++){
+                h -= docked[i].element.getHeight();
+            }
+            return h;
+        })();
 
         // grab page size
         me.canvasWidth = me.canvasEl.dom.width;
