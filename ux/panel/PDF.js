@@ -5,7 +5,7 @@
  */
 
 Ext.define('Ext.ux.panel.PDF', {
-    extend: 'Ext.Panel',
+    extend: 'Ext.Container',
 
     alias: 'widget.pdfpanel',
 
@@ -106,11 +106,11 @@ Ext.define('Ext.ux.panel.PDF', {
         });
         userItems.push({
             itemId: 'pagingToolbar',
-            xtype: 'titlebar',
-            ui: config.toolbarUi,
-            dock: 'bottom',
-            title: Ext.String.format(config.pageText, 1, 1),
-            items: pagingItems
+            xtype : 'titlebar',
+            ui    : config.toolbarUi,
+            docked: 'bottom',
+            title : Ext.String.format(config.pageText, 1, 1),
+            items : pagingItems
         });
         config.items = userItems;
         

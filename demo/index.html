@@ -1,31 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <title>PDF Panel</title>
-
-    <link rel="stylesheet" href="../lib/st2-2.0.1.1/resources/css/sencha-touch.css">
+    <title>ImageViewer Carousel Demo</title>
     
-    <script src="../lib/st2-2.0.1.1/sencha-touch-all.js"></script>
+    <link href="../lib/sencha-touch-2.0.1.1/resources/css/sencha-touch.css" rel="stylesheet" type="text/css" />
+    
+    <script src="../lib/sencha-touch-2.0.1.1/sencha-touch-all.js"></script>
     <script src="../lib/pdf.js/pdf.js"></script>
-    <script src="../ux/panel/PDF.js"></script>
-    <script>
-        Ext.Loader.setConfig({
-            enabled: true
-        });
-        
-        Ext.application({
-            name: 'PDF Panel',
-            
-            launch: function() {
-                Ext.create('Ext.ux.panel.PDF', {
-                    fullscreen: true,
-                    pageScale : 0.5,                                            // Initial scaling of the PDF. 1 = 100%
-                    src       : 'http://cdn.mozilla.net/pdfjs/tracemonkey.pdf', // URL to the PDF - Same Domain or Server with CORS Support
-                });
-            }
-        });
-    </script>
+    <script src="app.js"></script>
+
 </head>
 <body>
 </body>
