@@ -49,6 +49,8 @@ Ext.define('Ext.ux.panel.PDF', {
          */
         pageText: 'Page {0} of {1}',
         
+        hidePagingtoolbar: false,
+        
         /**
          * @cfg {String} ui
          * Style options for Toolbar. Either 'light' or 'dark'.
@@ -65,9 +67,8 @@ Ext.define('Ext.ux.panel.PDF', {
     
     constructor: function(config){
         var me = this,
-            pagingItems = me.getPagingItems(),
             config = Ext.Object.merge({}, me.config, config),
-            userItems = config.items || [];
+            pagingItems, userItems = config.items || [];
 
         me.containerCls = me.containerCls || '';
         me.containerCls += (' ' + me.extraContainerCls);
@@ -77,15 +78,18 @@ Ext.define('Ext.ux.panel.PDF', {
         
         config.html = '<figure><canvas class="pdf-page-container"></canvas></figure>';
         
-        userItems.push({
-            itemId: 'pagingToolbar',
-            xtype : 'titlebar',
-            ui    : config.toolbarUi,
-            docked: 'bottom',
-            title : Ext.String.format(config.pageText, 1, 1),
-            items : pagingItems
-        });
-        config.items = userItems;
+        if (!config.hidePagingtoolbar) {
+            pagingItems = me.getPagingItems();
+            userItems.push({
+                itemId: 'pagingToolbar',
+                xtype : 'titlebar',
+                ui    : config.toolbarUi,
+                docked: 'bottom',
+                title : Ext.String.format(config.pageText, 1, 1),
+                items : pagingItems
+            });
+            config.items = userItems;
+        }
         
         me.callParent([config]);
     },
@@ -212,8 +216,7 @@ Ext.define('Ext.ux.panel.PDF', {
 
     renderPage: function(num, callback) {
         var me = this,
-            toolbar = me.child('#pagingToolbar'),
-            isEmpty, pageCount,
+            toolbar, isEmpty, pageCount,
             currPage, pageText;
 
         if(me.isRendering) return;
@@ -231,9 +234,12 @@ Ext.define('Ext.ux.panel.PDF', {
         var layoutWasSuspended = me.suspendLayout;
         me.suspendLayout = true;
         
-        toolbar.setTitle(pageText);
-        toolbar.leftBox.child('#prev').setDisabled(currPage === 1 || isEmpty);
-        toolbar.rightBox.child('#next').setDisabled(currPage === pageCount || isEmpty);
+        if (!me.getHidePagingtoolbar()) {
+            toolbar = me.child('#pagingToolbar');
+            toolbar.setTitle(pageText);
+            toolbar.leftBox.child('#prev').setDisabled(currPage === 1 || isEmpty);
+            toolbar.rightBox.child('#next').setDisabled(currPage === pageCount || isEmpty);
+        }
         
         // Using promise to fetch the page
         me.pdfDoc.getPage(num).then(function(page) {
