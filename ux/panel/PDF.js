@@ -10,11 +10,6 @@ Ext.define('Ext.ux.panel.PDF', {
     alias : 'widget.pdfpanel',
     
     config: {
-        doubleTapScale: 1,
-        loadingMask   : true,
-        resizeOnLoad  : true,
-        initOnActivate: false,
-        scrollable    : 'both',
         
         /**
          * @cfg {String} src
@@ -27,6 +22,30 @@ Ext.define('Ext.ux.panel.PDF', {
          * Maximal posible scaling of the PDF if the user zoomes in. 1 = 100%
          */
         maxPageScale: 1.5,
+        
+        /**
+         * @cfg{Double} doubleTapScale
+         * Scaling on Double-Tap (Pinch). 1 = maximum Scale (maxPageScale), lager than 1 is more than maxPageScale!
+         */
+        doubleTapScale: 1,
+        
+        /**
+         * @cfg{Boolean} loadingMask
+         * Show or hide the loading Mask.
+         */
+        loadingMask: true,
+        
+        /**
+         * @cfg{Boolean} resizeOnLoad
+         * Resize the PDF to fit into screen after Loading?
+         */
+        resizeOnLoad: true,
+        
+        /**
+         * @cfg{Boolean} initOnActivate
+         * Should we initialize on activate? Otherwise we will init on painted.
+         */
+        initOnActivate: false,
     
         /**
          * @cfg {Boolean} disableWorker
@@ -49,6 +68,10 @@ Ext.define('Ext.ux.panel.PDF', {
          */
         pageText: 'Page {0} of {1}',
         
+        /**
+         * @cfg{Boolean} hidePagingtoolbar
+         * Show or hide the Pagingtoolbar.
+         */
         hidePagingtoolbar: false,
         
         /**
@@ -58,12 +81,15 @@ Ext.define('Ext.ux.panel.PDF', {
          */
         toolbarUi: 'dark',
         
+        /**
+         * These should not be changed
+         */
+        scrollable       : 'both',
         extraBaseCls     : Ext.baseCSSPrefix + 'pdf',
         extraContainerCls: Ext.baseCSSPrefix + 'pdf-body'
     },
     
     duringDestroy: false,
-    
     
     constructor: function(config){
         var me = this,
@@ -152,12 +178,12 @@ Ext.define('Ext.ux.panel.PDF', {
             resize: me.resize,
             scope: me
         });
-        me.canvasEl.addListener({
-            scope : me,
+        me.canvasEl.on({
             doubletap : me.onDoubleTap,
             pinchstart : me.onPagePinchStart,
             pinch : me.onPagePinch,
-            pinchend : me.onPagePinchEnd
+            pinchend : me.onPagePinchEnd,
+            scope : me
         });
 
         // load PDF
@@ -697,10 +723,22 @@ Ext.define('Ext.ux.panel.PDF', {
         
         me.duringDestroy = true;
         
-        me.un('activate', me.initViewer, me);
-        me.un('painted', me.initViewer, me);
+        me.un({
+            activate: me.initViewer,
+            painted: me.initViewer,
+            load: me.onPdfLoad,
+            resize: me.resize,
+            scope: me
+        });
+        me.canvasEl.un({
+            doubletap : me.onDoubleTap,
+            pinchstart : me.onPagePinchStart,
+            pinch : me.onPagePinch,
+            pinchend : me.onPagePinchEnd,
+            scope : me
+        });
         
-        Ext.destroy(me.getScrollable(), me.canvasEl);
+        Ext.destroy(me.getScrollable(), me.figEl, me.canvasEl);
         
         me.callParent();
     }
