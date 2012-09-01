@@ -670,8 +670,8 @@ Ext.define('Ext.ux.panel.PDF', {
         }
 
         // size container to final page size
-        var boundWidth = Math.max(me.canvasWidth * scale, me.viewportWidth);
-        var boundHeight = Math.max(me.canvasHeight * scale, me.viewportHeight);
+        var boundWidth = Math.max(me.canvasWidth * scale + 2 * me.translateX, me.viewportWidth);
+        var boundHeight = Math.max(me.canvasHeight * scale + 2 * me.translateY, me.viewportHeight);
 
         me.figEl.setStyle({
             width : boundWidth + 'px',
