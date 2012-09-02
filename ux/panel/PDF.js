@@ -15,7 +15,19 @@ Ext.define('Ext.ux.panel.PDF', {
          * @cfg {String} src
          * URL to the PDF - Same Domain or Server with CORS Support
          */
-        src: '',
+        src: null,
+        
+        /**
+         * @cfg {ArrayBuffer} data
+         * The PDF Data as ByteArray
+         */
+        data: null,
+        
+        /**
+         * @cfg {String} password
+         * Password required to open the PDF.
+         */
+        password: null,
 
         /**
          * @cfg{Double} maxPageScale
@@ -186,10 +198,24 @@ Ext.define('Ext.ux.panel.PDF', {
             scope : me
         });
 
-        // load PDF
-        if (me.getSrc()) {
-            me.loadPdf(me.getSrc());
+        // load the PDF
+        if (me.getSrc() || me.getData()) {
+            me.loadPdf(me.getSrc(), me.getData(), me.getPassword());
         }
+    },
+    
+    setSrc: function(src){
+        var me = this;
+        me.config.src = src;
+        me.config.data = null;
+        me.loadPdf(me.getSrc(), null, me.getPassword());
+    },
+    
+    setData: function(data){
+        var me = this;
+        me.config.src = null;
+        me.config.data = data;
+        me.loadPdf(null, me.getData(), me.getPassword());
     },
     
     getPagingItems: function(){
@@ -215,12 +241,20 @@ Ext.define('Ext.ux.panel.PDF', {
         }];
     },
 
-    loadPdf: function(src) {
-        var me = this;
+    loadPdf: function(src, data, password) {
+        var me = this,
+            parameters = { password: password };
+            
         if (me.canvasEl) {
             
+            if (typeof src === 'string') { // URL
+                parameters.url = src;
+            } else if (data && 'byteLength' in data) { // ArrayBuffer
+                parameters.data = data;
+            }
+            
             // Asynchronously download PDF as an ArrayBuffer
-            PDFJS.getDocument(src).then(function(pdfDoc) {
+            PDFJS.getDocument(parameters).then(function(pdfDoc) {
                 me.pdfDoc = pdfDoc;
                 me.onLoad();
             });
