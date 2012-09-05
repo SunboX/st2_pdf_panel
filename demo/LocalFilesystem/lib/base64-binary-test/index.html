@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Base64 to Binary Test</title>
+    
+    <!-- Base64 to ByteArray Converter -->
+    <script src="../base64-binary.js"></script>
+    
+    <!-- Test -->
+    <!--script src="tracemonkey.base64.js"></script-->
+    <!_-script src="tracemonkey.bin.js"></script-->
+    <script>
+        var tracemonkeyBase64 = 'data:application/pdf;base64,'
+            + 'JVBERi0xLjQKMyAwIG9iaiA8PAovTGVuZ3RoIDQ2MjIgICAgICAKL0ZpbHRlciAvRmxhdGVEZWNv';
+            
+        // replace data:application/pdf;base64,
+        tracemonkeyBase64 = tracemonkeyBase64.substring(28);
+        console.log(tracemonkeyBase64);
+        
+    </script>
+
+</head>
+<body>
+</body>
+</html>

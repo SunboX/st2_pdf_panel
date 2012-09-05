@@ -46,6 +46,8 @@ Ext.application({
             reader.onloadend = function(evt) {
                 console.log("Read as data URL");
                 var base64String = evt.target.result;
+                // replace data:application/pdf;base64,
+                base64String = base64String.substring(28);
                 var byteArray = Base64Binary.decodeArrayBuffer(base64String);
                 viewer.setData(byteArray);
             };

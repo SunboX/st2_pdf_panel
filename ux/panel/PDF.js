@@ -195,15 +195,12 @@ Ext.define('Ext.ux.panel.PDF', {
             pinchend : me.onPagePinchEnd,
             scope : me
         });
-        
-        console.log('initViewer');
 
         // load the PDF
         me.loadPdf();
     },
     
     setSrc: function(src) {
-        console.log('setSrc');
         var me = this;
         me.config.src = src;
         if(src !== null) {
@@ -218,7 +215,6 @@ Ext.define('Ext.ux.panel.PDF', {
     },
     
     setData: function(data) {
-        console.log('setData');
         var me = this;
         if(data !== null) {
             me.config.src = null;
@@ -283,8 +279,6 @@ Ext.define('Ext.ux.panel.PDF', {
             
         var params = { password: password };
             
-        console.log(src);
-            
         if (me.canvasEl) {
         
             me.isLoading = true;
@@ -296,7 +290,6 @@ Ext.define('Ext.ux.panel.PDF', {
             }
             
             // Asynchronously download PDF as an ArrayBuffer
-            console.log(params);
             PDFJS.getDocument(params).then(function(pdfDoc) {
                 me.pdfDoc = pdfDoc;
                 me.onLoad();
