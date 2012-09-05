@@ -101,6 +101,7 @@ Ext.define('Ext.ux.panel.PDF', {
         extraContainerCls: Ext.baseCSSPrefix + 'pdf-body'
     },
     
+    isLoading: false,
     duringDestroy: false,
     
     constructor: function(config){
@@ -161,10 +162,7 @@ Ext.define('Ext.ux.panel.PDF', {
 
         // mask viewer
         if (me.getLoadingMask()) {
-            me.setMasked({
-                xtype : 'loadmask',
-                message : me.getLoadingMessage()
-            });
+            me.showLoader();
         }
 
         // retrieve DOM els
@@ -197,28 +195,44 @@ Ext.define('Ext.ux.panel.PDF', {
             pinchend : me.onPagePinchEnd,
             scope : me
         });
+        
+        console.log('initViewer');
 
         // load the PDF
-        if (me.getSrc() || me.getData()) {
-            me.loadPdf(me.getSrc(), me.getData(), me.getPassword());
-        }
+        me.loadPdf();
     },
     
-    setSrc: function(src){
+    setSrc: function(src) {
+        console.log('setSrc');
         var me = this;
         me.config.src = src;
-        me.config.data = null;
-        me.loadPdf(me.getSrc(), null, me.getPassword());
+        if(src !== null) {
+            me.config.data = null;
+        }
+        me.loadPdf();
+        return me;
     },
     
-    setData: function(data){
+    getSrc: function() {
+        return this.config.src;
+    },
+    
+    setData: function(data) {
+        console.log('setData');
         var me = this;
-        me.config.src = null;
+        if(data !== null) {
+            me.config.src = null;
+        }
         me.config.data = data;
-        me.loadPdf(null, me.getData(), me.getPassword());
+        me.loadPdf();
+        return me;
     },
     
-    getPagingItems: function(){
+    getData: function() {
+        return this.config.data;
+    },
+    
+    getPagingItems: function() {
         var me = this;
 
         return [{
@@ -240,27 +254,56 @@ Ext.define('Ext.ux.panel.PDF', {
             scope: me
         }];
     },
+    
+    showLoader: function() {
+        var me = this;
+        me.setMasked({
+            xtype : 'loadmask',
+            message : me.getLoadingMessage()
+        });
+        return me;
+    },
+    
+    hideLoader: function() {
+        var me = this;
+        me.setMasked(false);
+        return me;
+    },
 
     loadPdf: function(src, data, password) {
-        var me = this,
-            parameters = { password: password };
+        var me = this;
+        
+        src = src || me.getSrc();
+        data = data || me.getData();
+        password = password || me.getPassword();
+        
+        if ((!src && !data) || me.isLoading) {
+            return me;
+        }
+            
+        var params = { password: password };
+            
+        console.log(src);
             
         if (me.canvasEl) {
+        
+            me.isLoading = true;
             
             if (typeof src === 'string') { // URL
-                parameters.url = src;
+                params.url = src;
             } else if (data && 'byteLength' in data) { // ArrayBuffer
-                parameters.data = data;
+                params.data = data;
             }
             
             // Asynchronously download PDF as an ArrayBuffer
-            PDFJS.getDocument(parameters).then(function(pdfDoc) {
+            console.log(params);
+            PDFJS.getDocument(params).then(function(pdfDoc) {
                 me.pdfDoc = pdfDoc;
                 me.onLoad();
             });
-        } else {
-            me.setSrc(src);
         }
+        
+        return me;
     },
     
     onLoad: function(el, e){
@@ -270,6 +313,7 @@ Ext.define('Ext.ux.panel.PDF', {
         me.currentPage = me.currentPage || (isEmpty ? 0 : 1);
         
         me.renderPage(me.currentPage, function(){
+            me.isLoading = false;
             me.fireEvent('load', me, el, e);
         });
     },
@@ -383,7 +427,7 @@ Ext.define('Ext.ux.panel.PDF', {
         });
 
         if (me.getLoadingMask()) {
-            me.setMasked(false);
+            me.hideLoader();
         }
 
         me.fireEvent('pdfLoaded', me);
