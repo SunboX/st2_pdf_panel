@@ -11,7 +11,7 @@ The rendered page looks a bit blurry. This can be fixed by applying a sharpening
     
     
 ### Usage ###
----
+
 ```javascript
 Ext.application({
 
