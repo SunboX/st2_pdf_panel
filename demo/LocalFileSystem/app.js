@@ -1,5 +1,6 @@
 /**
  * This will only work with PhoneGap/Cordova greater or equal 2.1.0 !
+ * @see https://issues.apache.org/jira/browse/CB-1380
  */
 Ext.application({
 
