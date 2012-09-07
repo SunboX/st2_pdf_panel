@@ -32,3 +32,10 @@ The rendered page looks a bit blurry. This can be fixed by applying a sharpening
 For an demo, please visit <a href="http://SunboX.github.com/st2_pdf_panel/demo/SimpleViewer/">http://SunboX.github.com/st2_pdf_panel/demo/SimpleViewer/</a>  
 
 Single page demo: <a href="http://SunboX.github.com/st2_pdf_panel/demo/NoToolbar/">http://SunboX.github.com/st2_pdf_panel/demo/NoToolbar/</a>  
+
+
+### PhoneGap/Cordova ###
+
+Because of a [bug](https://issues.apache.org/jira/browse/CB-1380) in previous versions of PhoneGap, this extension will only run in PhoneGap greater or equal [2.1.0](https://issues.apache.org/jira/browse/CB/fixforversion/12322462)
+
+A demo of working with local files bundled together with a "native" app could be found in [/demo/LocalFileSystem/](https://github.com/SunboX/st2_pdf_panel/tree/master/demo/LocalFileSystem)
