@@ -1,6 +1,6 @@
 Ext.application({
 
-    name: 'Loading from local Filesystem Demo',
+    name: 'Loading from local FileSystem Demo',
     views: [
         'Ext.ux.panel.PDF'
     ],
