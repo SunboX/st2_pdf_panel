@@ -40,7 +40,7 @@ Ext.application({
             // Read the local file into a Uint8Array.
             var reader = new FileReader();
             reader.onloadend = function(evt) {
-                console.log("Read as data URL");
+                console.log('Read as data URL');
                 var base64String = evt.target.result;
                 // replace data:application/pdf;base64,
                 base64String = base64String.substring(28);
