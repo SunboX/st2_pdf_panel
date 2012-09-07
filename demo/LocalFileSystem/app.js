@@ -1,3 +1,6 @@
+/**
+ * This will only work with PhoneGap/Cordova greater or equal 2.1.0 !
+ */
 Ext.application({
 
     name: 'Loading from local FileSystem Demo',
