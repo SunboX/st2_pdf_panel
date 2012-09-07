@@ -12,24 +12,24 @@ The rendered page looks a bit blurry. This can be fixed by applying a sharpening
     
 ### Usage ###
 ---
-    Ext.application({
+```javascript
+Ext.application({
+
+    views : [
+        'Ext.ux.panel.PDF'
+    ],
     
-        views : [
-            'Ext.ux.panel.PDF'
-        ],
+    launch: function() {
         
-        launch: function() {
-            
-            Ext.Viewport.add({
-                xtype     : 'pdfpanel',
-                fullscreen: true,
-                layout    : 'fit',
-                src       : 'http://cdn.mozilla.net/pdfjs/tracemonkey.pdf', // URL to the PDF - Same Domain or Server with CORS Support
-            });
-        }
-    });
-    
-    
+        Ext.Viewport.add({
+            xtype     : 'pdfpanel',
+            fullscreen: true,
+            layout    : 'fit',
+            src       : 'http://cdn.mozilla.net/pdfjs/tracemonkey.pdf', // URL to the PDF - Same Domain or Server with CORS Support
+        });
+    }
+});
+```
     
 ### Examples ###
 ---
