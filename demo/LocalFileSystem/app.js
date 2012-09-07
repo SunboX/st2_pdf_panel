@@ -32,11 +32,7 @@ Ext.application({
         }
 
         function gotFileEntry(fileEntry) {
-            fileEntry.file(gotFile, fail);
-        }
-
-        function gotFile(file) {
-            readDataUrl(file);
+            fileEntry.file(readDataUrl, fail);
         }
 
         function readDataUrl(file) {
