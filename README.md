@@ -33,9 +33,9 @@ Ext.application({
     
 ### Examples ###
 ---
-For an demo, please visit <a href="http://SunboX.github.com/st2_pdf_panel/demo/SimpleViewer/">http://SunboX.github.com/st2_pdf_panel/demo/SimpleViewer/</a>  
+For an demo, please visit <a href="http://SunboX.github.io/st2_pdf_panel/demo/SimpleViewer/">http://SunboX.github.io/st2_pdf_panel/demo/SimpleViewer/</a>  
 
-Single page demo: <a href="http://SunboX.github.com/st2_pdf_panel/demo/NoToolbar/">http://SunboX.github.com/st2_pdf_panel/demo/NoToolbar/</a>  
+Single page demo: <a href="http://SunboX.github.io/st2_pdf_panel/demo/NoToolbar/">http://SunboX.github.io/st2_pdf_panel/demo/NoToolbar/</a>  
     
     
     
