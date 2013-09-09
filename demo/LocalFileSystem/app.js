@@ -1,6 +1,10 @@
+/**
+ * This will only work with PhoneGap/Cordova greater or equal 2.1.0 !
+ * @see https://issues.apache.org/jira/browse/CB-1380
+ */
 Ext.application({
 
-    name: 'Loading from local Filesystem Demo',
+    name: 'Loading from local FileSystem Demo',
     views: [
         'Ext.ux.panel.PDF'
     ],
@@ -32,11 +36,7 @@ Ext.application({
         }
 
         function gotFileEntry(fileEntry) {
-            fileEntry.file(gotFile, fail);
-        }
-
-        function gotFile(file) {
-            readDataUrl(file);
+            fileEntry.file(readDataUrl, fail);
         }
 
         function readDataUrl(file) {
@@ -44,7 +44,7 @@ Ext.application({
             // Read the local file into a Uint8Array.
             var reader = new FileReader();
             reader.onloadend = function(evt) {
-                console.log("Read as data URL");
+                console.log('Read as data URL');
                 var base64String = evt.target.result;
                 // replace data:application/pdf;base64,
                 base64String = base64String.substring(28);
